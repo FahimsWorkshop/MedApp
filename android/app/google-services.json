@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "337005584542",
+    "firebase_url": "https://marveloustechnologiesapplab.firebaseio.com",
+    "project_id": "marveloustechnologiesapplab",
+    "storage_bucket": "marveloustechnologiesapplab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337005584542:android:3d4b38f74314075958db8f",
+        "android_client_info": {
+          "package_name": "com.marveloustech.medapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337005584542-76cip75t53g31dbpapjgc1448o7h8vms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfWfn7brVp8gON-fr4VifAt6PQMGVWqHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337005584542-76cip75t53g31dbpapjgc1448o7h8vms.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
