@@ -38,6 +38,8 @@ dev_dependencies:
   intl: any
   google_fonts: ^1.1.2
   readmore: ^1.0.0
+  firebase_messaging: ^7.0.3
+  http: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

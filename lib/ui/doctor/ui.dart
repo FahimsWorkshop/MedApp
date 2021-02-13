@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:medapp/sign_in.dart';
 import 'package:medapp/ui/animations/route.dart';
+import 'package:medapp/ui/blood_donation/ui.dart';
 import 'package:medapp/ui/home/ui.dart';
 import 'package:medapp/utils/uiHelpers.dart';
 import 'package:readmore/readmore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 /// ui.dart
 ///
@@ -17,7 +19,7 @@ import 'package:readmore/readmore.dart';
 
 class DoctorUI extends StatefulWidget {
   final doctorID;
-  bool isScheduled;
+  final bool isScheduled;
   final appointmentID;
 
   DoctorUI({@required this.doctorID, this.isScheduled, this.appointmentID});
@@ -27,6 +29,7 @@ class DoctorUI extends StatefulWidget {
 }
 
 class _DoctorUIState extends State<DoctorUI> {
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool isLoading = false;
   Map<String, dynamic> doctor;
 
@@ -34,6 +37,33 @@ class _DoctorUIState extends State<DoctorUI> {
   void initState() {
     loadData();
     super.initState();
+    this._firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          showDialog(
+              context: this.context,
+              builder: (BuildContext context) => AlertDialog(
+                title: Text(message["notification"]["title"]),
+                content: Text(message["notification"]["body"]),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  FlatButton(
+                    child: Text(
+                      "Close",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                      child: Text("Response"),
+                      onPressed: () async {
+                        Navigator.of(context)
+                            .push(rightToLeft(BloodDonationUI()));
+                      }),
+                ],
+              ));
+        });
   }
 
   @override
@@ -289,7 +319,9 @@ class _DoctorUIState extends State<DoctorUI> {
   }
 
   Future<void> loadData() async {
-    this.isLoading = true;
+    setState(() {
+      this.isLoading = true;
+    });
     CollectionReference doctorsReference =
         FirebaseFirestore.instance.collection('Doctors');
 
@@ -330,12 +362,15 @@ class _DoctorUIState extends State<DoctorUI> {
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 14,
-              ))
+              )),
+          SizedBox(
+            height: 7,
+          ),
         ],
       ));
 
-      return reviews;
     }
+    return reviews;
   }
 
   Future<void> setAppointment() async {
@@ -351,7 +386,7 @@ class _DoctorUIState extends State<DoctorUI> {
     });
     this.isLoading = false;
     Navigator.of(context).pushAndRemoveUntil(
-      rightToLeft(HomeUI()),
+      rightToLeft(UI()),
       (Route<dynamic> route) => false
     );
   }
@@ -362,7 +397,7 @@ class _DoctorUIState extends State<DoctorUI> {
     await doctorCollection.doc(this.widget.appointmentID).delete();
     this.isLoading = false;
     Navigator.of(context).pushAndRemoveUntil(
-        rightToLeft(HomeUI()),
+        rightToLeft(UI()),
             (Route<dynamic> route) => false
     );
   }

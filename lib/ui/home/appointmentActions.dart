@@ -19,7 +19,6 @@ class AppointmentActions extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("Upcoming Schedule", style: TextStyle(color: Colors.blueGrey.shade600, fontSize: 20, fontWeight: FontWeight.bold),),
-          Text("See all", style: TextStyle(color: Colors.blueAccent, fontSize: 15, fontWeight: FontWeight.bold),)
         ],
       ),
     );

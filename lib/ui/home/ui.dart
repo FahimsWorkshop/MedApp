@@ -5,10 +5,14 @@ import 'package:flutter/rendering.dart';
 import 'package:medapp/login_page.dart';
 import 'package:medapp/sign_in.dart';
 import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/home/appointmentActions.dart';
-import 'package:medapp/ui/home/appointments.dart';
-import 'package:medapp/ui/home/doctors.dart';
-import 'package:medapp/ui/home/doctorsActions.dart';
+import 'package:medapp/ui/appointments/ui.dart';
+import 'package:medapp/ui/articles/ui.dart';
+import 'package:medapp/ui/blood_donation/ui.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:medapp/ui/home/home.dart';
+import 'package:medapp/ui/medicine/ui.dart';
+import 'package:medapp/ui/profile/ui.dart';
+
 
 
 /// ui.dart
@@ -21,16 +25,18 @@ import 'package:medapp/ui/home/doctorsActions.dart';
 /// Fahim Al Islam 08 Feb, 2021 6:35 PM
 
 
-class HomeUI extends StatefulWidget {
+class UI extends StatefulWidget {
   final FirebaseApp firebaseAppInstance;
 
-  HomeUI({this.firebaseAppInstance});
+  UI({this.firebaseAppInstance});
 
   @override
-  _HomeUIState createState() => _HomeUIState();
+  _UIState createState() => _UIState();
 }
 
-class _HomeUIState extends State<HomeUI> {
+class _UIState extends State<UI> {
+
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   List<QueryDocumentSnapshot> doctors;
   List<QueryDocumentSnapshot> appointments;
@@ -43,9 +49,17 @@ class _HomeUIState extends State<HomeUI> {
     {"name": "Psychologist"},
   ];
 
+  int index = 0;
+
+  final List<Widget> pages = [
+    HomeUI(),
+    AppointmentsUI(),
+    ProfileUI()
+  ];
+  
   @override
   void initState() {
-    this.loadData();
+    this._firebaseMessaging.subscribeToTopic("medicineReminder");
     super.initState();
   }
 
@@ -73,6 +87,52 @@ class _HomeUIState extends State<HomeUI> {
             ListTile(
               title: Row(
                 children: [
+                  Icon(Icons.opacity_outlined,),
+                  SizedBox(width: 5,),
+                  Text("Blood Donations")
+                ],
+              ),
+              onTap: () {
+                this.isLoading = false;
+                Navigator.of(context).push(
+                    rightToLeft(BloodDonationUI())
+                );
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(Icons.healing_outlined,),
+                  SizedBox(width: 5,),
+                  Text("Medicines")
+                ],
+              ),
+              onTap: () {
+                this.isLoading = false;
+                Navigator.of(context).push(
+                    rightToLeft(MedicineUI())
+                );
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(Icons.article_outlined,),
+                  SizedBox(width: 5,),
+                  Text("Articles")
+                ],
+              ),
+              onTap: () {
+                this.isLoading = false;
+                Navigator.of(context).push(
+                    rightToLeft(ArticleUI())
+                );
+              },
+            ),
+            SizedBox(height: 50,),
+            ListTile(
+              title: Row(
+                children: [
                   Icon(Icons.logout),
                   SizedBox(width: 5,),
                   Text("Logout")
@@ -93,6 +153,12 @@ class _HomeUIState extends State<HomeUI> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
+        currentIndex: this.index,
+        onTap: (int i) {
+          setState(() {
+            this.index = i;
+          });
+        },
         elevation: 0,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
@@ -116,106 +182,7 @@ class _HomeUIState extends State<HomeUI> {
           SizedBox(width: 10,)
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: loadData,
-        child: !this.isLoading ? SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 20,),
-              AppointmentActions(),
-              SizedBox(height: 10,),
-              this.totalAppointments != 0 ? Container(
-                height: 190,
-                child: Appointments(appointments: this.appointments,),
-              ) : Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Text("No appointments are scheduled"),
-              ),
-              SizedBox(height: 40,),
-              DoctorsActions(),
-              SizedBox(height: 10,),
-              Container(
-                height: 50,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: this.fields.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var field = this.fields[index];
-                    return Padding(
-                      padding: EdgeInsets.only(right: 20, left: index == 0 ? 20 : 0),
-                      child: FlatButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        ),
-                        color: Colors.white,
-                        onPressed: () {
-                          setState(() {
-                            this.isLoading = true;
-                          });
-
-                          dynamic doctorsQuery;
-
-                          if (index == 0) {
-                            doctorsQuery =
-                                FirebaseFirestore.instance.collection('Doctors');
-                          }
-                          else {
-                            doctorsQuery =
-                                FirebaseFirestore.instance.collection('Doctors')
-                                    .where('Field', isEqualTo: field['name']);
-                          }
-
-                          doctorsQuery.snapshots().listen((event) {
-                            setState(() {
-                              this.doctors = event.docs;
-                              this.isLoading = false;
-                            });
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(field['name'], style: TextStyle(
-                              color: Colors.blueGrey.shade600,
-                              fontWeight: FontWeight.bold
-                          ),),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 10,),
-              Flexible(
-                child: Doctors(doctors: this.doctors, size: this.doctors.length,),
-              )
-            ],
-          ),
-        ) : Center(child: CircularProgressIndicator(),),
-      ),
+      body: this.pages[this.index],
     );
   }
-
-  Future<void> loadData() async {
-    this.isLoading = true;
-    CollectionReference doctorsReference = FirebaseFirestore.instance.collection('Doctors');
-    Query appointmentsReference = FirebaseFirestore.instance.collection('Appointments').where('User', isEqualTo: uid).orderBy("Timestamp", descending: false);
-
-    doctorsReference.snapshots().listen((event) {
-      setState(() {
-        this.doctors = event.docs;
-      });
-    });
-
-    appointmentsReference.snapshots().listen((event) {
-      setState(() {
-        this.appointments = event.docs;
-        this.totalAppointments = event.size;
-        this.isLoading = false;
-      });
-    });
-  }
 }
-
