@@ -1,10 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:intl/intl.dart';
+import 'package:zoton/ui/ambulance/details.dart';
 import 'package:zoton/ui/animations/route.dart';
-import 'package:zoton/ui/articles/details.dart';
 import 'package:zoton/ui/blood_donation/details_ui.dart';
 import 'package:zoton/ui/core/app_bar.dart';
 
@@ -15,22 +13,24 @@ import 'package:zoton/ui/core/app_bar.dart';
 /// found in the LICENSE file.
 ///
 /// Created by
-/// Fahim Al Islam 14 Feb, 2021 2:46 AM
+/// Fahim Al Islam 16 Feb, 2021 9:15 AM
 
-class ArticleUI extends StatefulWidget {
+
+class AmbulancesUI extends StatefulWidget {
   @override
-  _ArticleUIState createState() => _ArticleUIState();
+  _AmbulancesUIState createState() => _AmbulancesUIState();
 }
 
-class _ArticleUIState extends State<ArticleUI> {
+class _AmbulancesUIState extends State<AmbulancesUI> {
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool isLoading = false;
-  List<QueryDocumentSnapshot> articles;
+  List<QueryDocumentSnapshot> ambulances;
   int size;
   String contactDetails = "";
   String purpose = "";
   String bloodGroup = "";
   String userToken = "";
+  bool isMine = false;
 
   @override
   void initState() {
@@ -70,11 +70,13 @@ class _ArticleUIState extends State<ArticleUI> {
     return Scaffold(
       appBar: generalAppBar(
           title: Text(
-        "Articles",
-        style: TextStyle(color: Colors.black87),
-      )),
+            "Ambulances",
+            style: TextStyle(color: Colors.black87),
+          )),
       body: this.isLoading ? Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: this.getChildren(context),
           )
       ),
@@ -87,12 +89,12 @@ class _ArticleUIState extends State<ArticleUI> {
       this._firebaseMessaging.getToken().then((value) => this.userToken = value);
     });
 
-    CollectionReference bloodDonationCollectionRefrence =
-    FirebaseFirestore.instance.collection('Articles');
+    CollectionReference bloodDonationCollectionReference =
+    FirebaseFirestore.instance.collection('Ambulances');
 
-    bloodDonationCollectionRefrence.snapshots().listen((event) {
+    bloodDonationCollectionReference.snapshots().listen((event) {
       setState(() {
-        this.articles = event.docs;
+        this.ambulances = event.docs;
         this.size = event.size;
         this.isLoading = false;
       });
@@ -103,57 +105,44 @@ class _ArticleUIState extends State<ArticleUI> {
     List<Widget> children = [];
 
     for (var index = 0; index < this.size; index++) {
-      dynamic article = this.articles[index];
-      children.add(Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30), color: Colors.white),
-        child: InkWell(
-          onTap: () async {
-            Navigator.of(context).push(
-                rightToLeft(ArticleDetailsUI(article: article,))
-            );
-          },
+      dynamic ambulance = this.ambulances[index];
+      children.add(InkWell(
+        onTap: () async {
+          Navigator.of(context).push(
+              rightToLeft(AmbulanceDetailsUI(ambulance: ambulance,))
+          );
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30), color: Colors.white),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    article['Title'],
-                    style: TextStyle(
-                        color: Colors.blueGrey.shade600,
-                        letterSpacing: 1,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    article["By_Name"],
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  FlatButton(
-                    onPressed: () {},
+              SelectableText(
+                ambulance['Provider'],
+                style: TextStyle(
+                    color: Colors.blueGrey.shade600,
+                    letterSpacing: 1,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+              SelectableText(
+                ambulance['Area'],
+                style: TextStyle(
                     color: Colors.grey,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    child: Text(article["Topic"], style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
-                  ),
-                  Text(
-                    DateFormat.yMMMd().add_jm().format(DateTime.parse(
-                        article['Timestamp'].toDate().toString())),
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+              SelectableText(
+                ambulance['Contact_Number'],
+                style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 15,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -164,3 +153,4 @@ class _ArticleUIState extends State<ArticleUI> {
     return children;
   }
 }
+

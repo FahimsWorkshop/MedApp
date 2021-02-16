@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
-import 'package:medapp/login_page.dart';
-import 'package:medapp/sign_in.dart';
-import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/appointments/ui.dart';
-import 'package:medapp/ui/articles/ui.dart';
-import 'package:medapp/ui/blood_donation/ui.dart';
+import 'package:zoton/login_page.dart';
+import 'package:zoton/sign_in.dart';
+import 'package:zoton/ui/ambulance/ui.dart';
+import 'package:zoton/ui/animations/route.dart';
+import 'package:zoton/ui/appointments/ui.dart';
+import 'package:zoton/ui/articles/ui.dart';
+import 'package:zoton/ui/blood_donation/ui.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:medapp/ui/home/home.dart';
-import 'package:medapp/ui/medicine/ui.dart';
-import 'package:medapp/ui/profile/ui.dart';
+import 'package:zoton/ui/home/home.dart';
+import 'package:zoton/ui/medicine/ui.dart';
+import 'package:zoton/ui/profile/ui.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 
 
@@ -65,6 +67,7 @@ class _UIState extends State<UI> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
@@ -75,10 +78,10 @@ class _UIState extends State<UI> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('MedApp', style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 30
+              child: Text('ZOTON', style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30
               ),),
               decoration: BoxDecoration(
                 color: Colors.blue.shade800,
@@ -92,10 +95,25 @@ class _UIState extends State<UI> {
                   Text("Blood Donations")
                 ],
               ),
-              onTap: () {
+              onTap: () async {
                 this.isLoading = false;
                 Navigator.of(context).push(
                     rightToLeft(BloodDonationUI())
+                );
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(Icons.medical_services_outlined,),
+                  SizedBox(width: 5,),
+                  Text("Ambulances")
+                ],
+              ),
+              onTap: () {
+                this.isLoading = false;
+                Navigator.of(context).push(
+                    rightToLeft(AmbulancesUI())
                 );
               },
             ),
@@ -168,8 +186,8 @@ class _UIState extends State<UI> {
       ),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.blueGrey),
-        toolbarHeight: 80,
-        backgroundColor: Color(0xfff1f1f1),
+        toolbarHeight: 60,
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         title: Text(name, style: TextStyle(color: Colors.black87),),

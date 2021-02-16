@@ -3,10 +3,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:intl/intl.dart';
-import 'package:medapp/services/fcm.dart';
-import 'package:medapp/sign_in.dart';
-import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/core/app_bar.dart';
+import 'package:zoton/services/fcm.dart';
+import 'package:zoton/sign_in.dart';
+import 'package:zoton/ui/animations/route.dart';
+import 'package:zoton/ui/core/app_bar.dart';
 
 import 'details_ui.dart';
 

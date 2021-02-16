@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/doctor/ui.dart';
-import 'package:medapp/utils/uiHelpers.dart';
+import 'package:zoton/ui/animations/route.dart';
+import 'package:zoton/ui/doctor/ui.dart';
+import 'package:zoton/utils/uiHelpers.dart';
 
 /// doctors.dart
 ///
@@ -61,24 +61,33 @@ class Doctors extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            doctor['Name'],
-                            style: TextStyle(
-                                color: Colors.blueGrey.shade600,
-                                letterSpacing: 1,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            doctor['Field'],
-                            style: TextStyle(
-                                color: Colors.grey, fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                      Container(
+                        width: 200,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              doctor['Name'],
+                              style: TextStyle(
+                                  color: Colors.blueGrey.shade600,
+                                  letterSpacing: 1,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              doctor['Field'],
+                              style: TextStyle(
+                                  color: Colors.grey, fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              doctor['Certificates'],
+                              style: TextStyle(
+                                  color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 10,),
                       doctor['Reviews'].length != 0 && doctor['Rating'] != 0 ? Row(

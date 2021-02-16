@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:medapp/sign_in.dart';
-import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/home/ui.dart';
+import 'package:zoton/sign_in.dart';
+import 'package:zoton/ui/animations/route.dart';
+import 'package:zoton/ui/home/ui.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -14,21 +13,25 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("MedApp", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-              SizedBox(height: 50),
-              _signInButton(),
-            ],
+          body: Container(
+            color: Colors.white,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('ZOTON', style: GoogleFonts.pacifico(textStyle: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30
+                  )),),
+                  SizedBox(height: 50),
+                  _signInButton(),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        );
   }
 
   Widget _signInButton() {
@@ -38,9 +41,7 @@ class _LoginPageState extends State<LoginPage> {
         signInWithGoogle().then((result) {
           if (result != null) {
             Navigator.of(context).pushAndRemoveUntil(
-                rightToLeft(UI()),
-                    (Route<dynamic> route) => false
-            );
+                rightToLeft(UI()), (Route<dynamic> route) => false);
           }
         });
       },

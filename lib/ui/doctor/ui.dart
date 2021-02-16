@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:medapp/sign_in.dart';
-import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/blood_donation/ui.dart';
-import 'package:medapp/ui/home/ui.dart';
-import 'package:medapp/utils/uiHelpers.dart';
+import 'package:zoton/sign_in.dart';
+import 'package:zoton/ui/animations/route.dart';
+import 'package:zoton/ui/blood_donation/ui.dart';
+import 'package:zoton/ui/home/ui.dart';
+import 'package:zoton/utils/uiHelpers.dart';
 import 'package:readmore/readmore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -103,25 +103,56 @@ class _DoctorUIState extends State<DoctorUI> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                doctor['Name'],
-                                style: TextStyle(
-                                    color: Colors.blueGrey.shade600,
-                                    letterSpacing: 1,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                              Text(
-                                doctor['Field'],
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  doctor['Name'],
+                                  style: TextStyle(
+                                      color: Colors.blueGrey.shade600,
+                                      letterSpacing: 1,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w900),
+                                ),
+                                Text(
+                                  doctor['Field'],
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  doctor['Certificates'],
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                                ),
+                                Text(
+                                  doctor['Treatments'],
+                                  style: TextStyle(
+                                      color: Colors.grey.shade700, fontSize: 13, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 5,),
+                                Text(
+                                  doctor['Chamber'],
+                                  style: TextStyle(
+                                      color: Colors.grey.shade700, fontSize: 13, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  doctor['Visiting_Hour'],
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                                ),
+                                Text(
+                                  doctor['Practice_Days'],
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                                ),
+                              ],
+                            ),
+                            constraints: BoxConstraints(
+                              maxWidth: 180
+                            ),
                           ),
                           SizedBox(
                             height: 20,
@@ -302,7 +333,7 @@ class _DoctorUIState extends State<DoctorUI> {
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: this.getReviews(),
+                            children: this.doctor['Reviews'].toList().length != 0 ? this.getReviews() : [],
                           ),
                         ],
                       ),

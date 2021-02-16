@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:medapp/ui/core/app_bar.dart';
+import 'package:zoton/ui/core/app_bar.dart';
 
 /// details_ui.dart
 ///

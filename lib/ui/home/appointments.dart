@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/doctor/ui.dart';
+import 'package:zoton/ui/animations/route.dart';
+import 'package:zoton/ui/doctor/ui.dart';
 
 /// appointments.dart
 ///
@@ -26,6 +26,7 @@ class Appointments extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         var appointment = this.appointments[index];
         return Container(
+          width: 280,
           decoration: BoxDecoration(
               color: Colors.blue.shade700,
               borderRadius: BorderRadius.circular(30)),
@@ -46,22 +47,25 @@ class Appointments extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            appointment['DoctorName'],
-                            style: TextStyle(
-                                color: Colors.white,
-                                letterSpacing: 1,
-                                fontSize: 18),
-                          ),
-                          Text(
-                            appointment['DoctorField'],
-                            style: TextStyle(
-                                color: Colors.blue.shade300, fontSize: 15),
-                          )
-                        ],
+                      Container(
+                        width: 190,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              appointment['DoctorName'],
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  letterSpacing: 1,
+                                  fontSize: 16),
+                            ),
+                            Text(
+                              appointment['DoctorField'],
+                              style: TextStyle(
+                                  color: Colors.blue.shade300, fontSize: 15),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),

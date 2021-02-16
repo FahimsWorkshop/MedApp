@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/doctor/ui.dart';
+import 'package:zoton/ui/animations/route.dart';
+import 'package:zoton/ui/doctor/ui.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -74,22 +74,25 @@ class _AppointmentsUIState extends State<AppointmentsUI> {
                         SizedBox(
                           width: 10,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              appointment['DoctorName'],
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 1,
-                                  fontSize: 18),
-                            ),
-                            Text(
-                              appointment['DoctorField'],
-                              style: TextStyle(
-                                  color: Colors.blue.shade300, fontSize: 15),
-                            )
-                          ],
+                        Container(
+                          width: 220,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                appointment['DoctorName'],
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: 1,
+                                    fontSize: 18),
+                              ),
+                              Text(
+                                appointment['DoctorField'],
+                                style: TextStyle(
+                                    color: Colors.blue.shade300, fontSize: 15),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
-import 'package:medapp/sign_in.dart';
-import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/blood_donation/ui.dart';
-import 'package:medapp/ui/home/appointmentActions.dart';
-import 'package:medapp/ui/home/appointments.dart';
-import 'package:medapp/ui/home/doctors.dart';
-import 'package:medapp/ui/home/doctorsActions.dart';
+import 'package:zoton/sign_in.dart';
+import 'package:zoton/ui/animations/route.dart';
+import 'package:zoton/ui/blood_donation/ui.dart';
+import 'package:zoton/ui/home/appointmentActions.dart';
+import 'package:zoton/ui/home/appointments.dart';
+import 'package:zoton/ui/home/doctors.dart';
+import 'package:zoton/ui/home/doctorsActions.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:zoton/ui/home/navigationGrids.dart';
 
 /// home.dart
 ///
@@ -37,7 +38,9 @@ class _HomeUIState extends State<HomeUI> {
   List<Map<String, dynamic>> fields = [
     {"name": "Relevant"},
     {"name": "Heart Surgeon"},
-    {"name": "Psychologist"},
+    {"name": "Dermatology"},
+    {"name": "Cardiology"},
+    {"name": "Medicine"},
   ];
 
   @override
@@ -82,6 +85,10 @@ class _HomeUIState extends State<HomeUI> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            Flexible(child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: NavigationGrid(),
+            )),
             SizedBox(height: 20,),
             AppointmentActions(),
             SizedBox(height: 10,),

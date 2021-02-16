@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:medapp/ui/animations/route.dart';
-import 'package:medapp/ui/blood_donation/details_ui.dart';
-import 'package:medapp/ui/core/app_bar.dart';
+import 'package:zoton/ui/animations/route.dart';
+import 'package:zoton/ui/blood_donation/details_ui.dart';
+import 'package:zoton/ui/core/app_bar.dart';
+import 'package:zoton/ui/medicine/details.dart';
 
 /// ui.dart
 ///
@@ -106,60 +107,69 @@ class _MedicineUIState extends State<MedicineUI> {
 
     for (var index = 0; index < this.size; index++) {
       dynamic medicine = this.medicines[index];
-      children.add(Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30), color: Colors.white),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      medicine['Name'],
-                      style: TextStyle(
-                          color: Colors.blueGrey.shade600,
-                          letterSpacing: 1,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+      children.add(InkWell(
+        onTap: () async {
+          Navigator.of(context).push(
+              rightToLeft(MedicineDetailsUI(medicine: medicine,))
+          );
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30), color: Colors.white),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    medicine['Name'],
+                    style: TextStyle(
+                        color: Colors.blueGrey.shade600,
+                        letterSpacing: 1,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    medicine['Contains'],
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    medicine['Manufacturer'],
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 15,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                medicine['Medicine_For'],
+                style: TextStyle(
+                    color: Colors.grey.shade900,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10,),
+              Text(
+                medicine['Price'],
+                style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 15,
                     ),
-                    Text(
-                      medicine['Contains'],
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      medicine['Manufacturer'],
-                      style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 15,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  medicine['Medicine_For'],
-                  style: TextStyle(
-                      color: Colors.grey.shade900,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(width: 10,)
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ));
     }

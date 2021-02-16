@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medapp/ui/core/app_bar.dart';
+import 'package:zoton/ui/core/app_bar.dart';
 import 'package:intl/intl.dart';
 
 /// details.dart
